@@ -67,7 +67,7 @@ export function analyticsPlugin(
 		adminEntry: "@emdash-cms/plugin-analytics/admin",
 		options,
 		capabilities: ["page:inject"],
-		adminPages: [{ path: "/", label: "Analytics", icon: "chart" }],
+		adminPages: [{ path: "/", label: "Analytics", icon: "chart" }, { path: "/settings", label: "Analytics", icon: "chart" }],
 		adminWidgets: [{ id: "views-today", title: "Page Views", size: "half" }],
 	};
 }

@@ -272,8 +272,8 @@ function AnalyticsPage() {
 		try {
 			const res = await apiGet("stats/overview");
 			if (!res.ok) throw new Error("Failed to load overview");
-			const data = await res.json();
-			setOverview(data);
+			const json = await res.json();
+			setOverview(json.data ?? json);
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to load analytics",
@@ -284,9 +284,9 @@ function AnalyticsPage() {
 	const fetchRealtime = React.useCallback(async () => {
 		try {
 			const res = await apiGet("stats/realtime");
-			if (!res.ok) return;
-			const data = await res.json();
-			setRealtime(data);
+			if (!res.ok) throw new Error("Failed");
+			const json = await res.json();
+			setRealtime(json.data ?? json);
 		} catch {
 			// silent fail for realtime
 		}
@@ -297,9 +297,9 @@ function AnalyticsPage() {
 			const body: Record<string, unknown> = { days: daysFilter };
 			if (collectionFilter) body.collection = collectionFilter;
 			const res = await apiPost("stats/content", body);
-			if (!res.ok) return;
-			const data = await res.json();
-			setContentData(data);
+			if (!res.ok) throw new Error("Failed");
+			const json = await res.json();
+			setContentData(json.data ?? json);
 		} catch {
 			// silent fail
 		}
@@ -348,7 +348,7 @@ function AnalyticsPage() {
 	// Collect unique collections from popular content
 	const collections = Array.from(
 		new Set(
-			(overview?.popular ?? [])
+			((overview?.popular ?? []))
 				.map((p) => p.collection)
 				.filter(Boolean),
 		),
@@ -440,7 +440,7 @@ function AnalyticsPage() {
 				>
 					Page Views (Last 30 Days)
 				</h2>
-				{overview?.days && <SimpleChart data={overview.days} height={180} />}
+				{overview?.days && <SimpleChart data={overview?.days} height={180} />}
 			</div>
 
 			{/* Popular Content */}
@@ -635,7 +635,7 @@ function AnalyticsPage() {
 			</div>
 
 			{/* Content breakdown */}
-			{contentData && contentData.topContent.length > 0 && (
+			{contentData && contentData.topContent?.length > 0 && (
 				<div
 					style={{
 						backgroundColor: "#fff",
@@ -739,10 +739,11 @@ function ViewsTodayWidget() {
 			try {
 				const res = await apiGet("stats/overview");
 				if (!res.ok) return;
-				const data: OverviewData = await res.json();
-				setTodayViews(data.today);
+				const json = await res.json();
+				const data: OverviewData = json.data ?? json;
+				setTodayViews(data?.today ?? 0);
 				// Last 7 days for sparkline
-				const last7 = data.days.slice(-7).map((d) => d.views);
+				const last7 = (data?.days ?? []).slice(-7).map((d) => d.views);
 				setSparkData(last7);
 			} catch {
 				// silent fail
@@ -810,6 +811,7 @@ function ViewsTodayWidget() {
 
 export const pages: PluginAdminExports["pages"] = {
 	"/": AnalyticsPage,
+	"/settings": AnalyticsPage,
 };
 
 export const widgets: PluginAdminExports["widgets"] = {
