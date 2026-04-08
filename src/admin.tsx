@@ -242,7 +242,7 @@ function StatCard({
 					marginTop: "4px",
 				}}
 			>
-				{typeof value === "number" ? value.toLocaleString() : value}
+				{typeof value === "number" ? (value ?? 0).toLocaleString() : value}
 			</div>
 			{sub && (
 				<div style={{ fontSize: "12px", color: "#9ca3af", marginTop: "2px" }}>
@@ -610,7 +610,7 @@ function AnalyticsPage() {
 											color: "#374151",
 										}}
 									>
-										{entry.views.toLocaleString()}
+										{(entry.views ?? 0).toLocaleString()}
 									</td>
 								</tr>
 							))}
@@ -655,7 +655,7 @@ function AnalyticsPage() {
 						Content Breakdown (Last {daysFilter} Days)
 					</h2>
 					<div style={{ fontSize: "13px", color: "#6b7280", marginBottom: "12px" }}>
-						Total views: {contentData.total.toLocaleString()}
+						Total views: {(contentData?.total ?? 0).toLocaleString()}
 					</div>
 					<div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
 						{contentData.topContent.slice(0, 10).map((item) => {
@@ -786,7 +786,7 @@ function ViewsTodayWidget() {
 							lineHeight: 1,
 						}}
 					>
-						{todayViews.toLocaleString()}
+						{(todayViews ?? 0).toLocaleString()}
 					</div>
 					<div
 						style={{
