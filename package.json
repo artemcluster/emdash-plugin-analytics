@@ -1,0 +1,32 @@
+{
+  "name": "emdash-plugin-analytics",
+  "version": "0.1.0",
+  "description": "Page view analytics plugin for EmDash CMS. Instant tracking, dashboard with charts, popular content, real-time counters.",
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./admin": "./src/admin.tsx"
+  },
+  "files": ["src"],
+  "license": "MIT",
+  "keywords": [
+    "emdash",
+    "cms",
+    "plugin",
+    "analytics",
+    "pageviews",
+    "tracking",
+    "dashboard",
+    "statistics"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artemcluster/emdash-plugin-analytics.git"
+  },
+  "peerDependencies": {
+    "astro": ">=6.0.0",
+    "emdash": ">=0.1.0",
+    "react": "^18.0.0 || ^19.0.0"
+  }
+}
